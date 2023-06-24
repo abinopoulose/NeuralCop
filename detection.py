@@ -3,19 +3,14 @@ import numpy as np
 import uuid
 from database import *
 
-# Load Yolo
-net = cv2.dnn.readNet("yolov3_training_2000.weights", "yolov3_testing.cfg")
+# Load model
+net = cv2.dnn.readNet("yolov5_training_2000.weights", "yolov5_testing.cfg")
 classes = ["weapon"]
 
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
-# Loading image
-# img = cv2.imread("room_ser.jpg")
-# img = cv2.resize(img, None, fx=0.4, fy=0.4)
-
-# Enter file name for example "ak47.mp4" or press "Enter" to start webcam
 def value():
     val = 0
     return val
@@ -72,14 +67,9 @@ while True:
             cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
             cv2.putText(img, label, (x, y + 30), font, 3, color, 3)
             path="static/video/"+str(uuid.uuid4())+".png"
-            cv2.imwrite(path,img)
+            cv2.imwrite("D:/Main-Project/cop/public/"+path,img)
             print(".........................",path)
-            q="insert into emergency values(null,'1','Potential threat detected','0','0','pending')"
-            insert(q)
-
-
-
-            q="insert into request values(null,'1','request','%s','0','pending','Video')"%(path)
+            q="insert into threat values(null,'76.630428','9.951297','%s','pending')"%(path)
             insert(q)
 
 
